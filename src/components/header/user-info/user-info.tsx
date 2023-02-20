@@ -3,11 +3,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import ImageIcon from '@mui/icons-material/Image';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import WorkIcon from '@mui/icons-material/Work';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import Divider from '@mui/material/Divider';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Menu from '@mui/material/Menu';
+import { useAppSelector } from '../../../app/hooks';
+import { selectUser } from '../../../slices/app.slice';
 
 interface UserInfoProps {
     anchorEl: null | HTMLElement
@@ -21,6 +24,8 @@ const UserInfo: React.FC<UserInfoProps> = ({
     open,
     handleClose
 }) => {
+
+    const user = useAppSelector(selectUser);
     return <>
         <Menu
             id="basic-menu"
@@ -41,29 +46,21 @@ const UserInfo: React.FC<UserInfoProps> = ({
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar>
-                            <ImageIcon />
+                            <AccountCircleIcon />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Photos" secondary="Jan 9, 2014" />
+                    <ListItemText primary="Email" secondary={user?.email} />
                 </ListItem>
                 <Divider variant="inset" component="li" />
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar>
-                            <WorkIcon />
+                            <AccessTimeIcon />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary="Work" secondary="Jan 7, 2014" />
+                    <ListItemText primary="Last active" secondary={new Date(+user!.lastLoginAt).toLocaleString()} />
                 </ListItem>
                 <Divider variant="inset" component="li" />
-                <ListItem>
-                    <ListItemAvatar>
-                        <Avatar>
-                            <BeachAccessIcon />
-                        </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary="Vacation" secondary="July 20, 2014" />
-                </ListItem>
             </List>
         </Menu>
     </>
