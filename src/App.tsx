@@ -1,19 +1,38 @@
 import { ThemeProvider } from '@mui/material';
 import './App.css';
-import { useAppSelector } from './app/hooks';
+import { useAppDispatch, useAppSelector } from './app/hooks';
 import Header from './components/header/header';
-import { selectAppColorMode } from './slices/app.slice';
+import { AppUser, selectAppColorMode, setUser, ValidUserMetadata } from './slices/app.slice';
 import { darkTheme, lightTheme } from './styled/theme'
 import { onAuthStateChanged, User } from 'firebase/auth'
 import { useEffect } from 'react';
 import { auth } from '.';
+import { authService } from './service/auth/auth.service';
 
 function App() {
   const colorMode = useAppSelector(selectAppColorMode)
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    authService.signIn('test@wp.pl', '123456')
+  }, [])
 
   useEffect(()=> {
     onAuthStateChanged(auth, (user: User | null)=> {
       console.log('Current user', user)
+      let userInfo: AppUser | null = null;
+
+      if(user){
+        userInfo = {
+          uid: user.uid,
+          email: user.email,
+          emailVerified: user.emailVerified,
+          lastLoginAt: (user.metadata as ValidUserMetadata).lastLoginAt
+        }
+      }
+      
+      dispatch(setUser(userInfo))
+
     })
   }, [])
 

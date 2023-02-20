@@ -1,11 +1,19 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserMetadata } from 'firebase/auth';
 import { RootState, AppThunk } from '../app/store';
 
 export type ColorMode = 'light' | 'dark'
 
+export interface ValidUserMetadata extends UserMetadata {
+    createdAt: string
+    lastLoginAt: string
+}
+
 export interface AppUser {
     uid: string;
-    email: string;
+    email: string | null;
+    emailVerified: boolean;
+    lastLoginAt: string;
 }
 
 export interface AppState {
