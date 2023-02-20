@@ -8,16 +8,35 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import { ColorMode, selectAppColorMode, setAppColorMode } from '../../slices/app.slice';
+import { ColorMode, selectAppColorMode, selectIsUserLogged, setAppColorMode } from '../../slices/app.slice';
+import { authService } from '../../service/auth/auth.service';
+import { useState } from 'react'
+import UserInfo from './user-info/user-info';
 
 const Header: React.FC = () => {
+
     const dispatch = useAppDispatch();
     const colorMode = useAppSelector(selectAppColorMode)
+    const isUserLogged = useAppSelector(selectIsUserLogged)
+
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const handleAppColorModeChange = () => {
         const newColorMode: ColorMode = colorMode === 'light' ? 'dark' : 'light'
         dispatch(setAppColorMode(newColorMode))
+    }
+
+    const logMockUser = () => {
+        authService.signIn('grzegorzkikut@test.pl', '123456')
     }
 
     return <>
@@ -45,7 +64,18 @@ const Header: React.FC = () => {
                             {colorMode === 'dark' ? <DarkModeIcon /> : <LightModeIcon />}
                         </IconButton>
                     </Box>
-                    <Button color="inherit">Login</Button>
+                    {isUserLogged ?
+                        <>
+                            <IconButton
+                                size="large"
+                                color="inherit"
+                                onClick={handleClick}
+                            >
+                                <AccountCircleIcon />
+                            </IconButton>
+                            <UserInfo open={open} handleClose={handleClose} anchorEl={anchorEl} />
+                        </>
+                        : <Button color="inherit" onClick={logMockUser}>Login</Button>}
                 </Toolbar>
             </AppBar>
         </Box>

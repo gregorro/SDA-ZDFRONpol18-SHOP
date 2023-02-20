@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, UserCredential, User } from "firebase/auth"
+import { signInWithEmailAndPassword, UserCredential, User, signOut as signOutUser } from "firebase/auth"
 import { auth } from "../.."
 
 const authServiceDef = () => {
@@ -12,8 +12,17 @@ const authServiceDef = () => {
         }
     }
 
+    const signOut = async () => {
+        try {
+            await signOutUser(auth)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return {
-        signIn
+        signIn,
+        signOut
     }
 }
 

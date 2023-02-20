@@ -14,7 +14,10 @@ function App() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    authService.signIn('test@wp.pl', '123456')
+    // zrob tu cos jak komponent bedzie sie wymontowywał 
+    return () => {
+      authService.signOut()
+    }
   }, [])
 
   useEffect(()=> {
@@ -30,7 +33,7 @@ function App() {
           lastLoginAt: (user.metadata as ValidUserMetadata).lastLoginAt
         }
       }
-      
+
       dispatch(setUser(userInfo))
 
     })

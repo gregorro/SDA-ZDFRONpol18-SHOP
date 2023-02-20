@@ -44,6 +44,7 @@ export const { setAppColorMode, setUser } = appSlice.actions
 
 //! Selektory
 export const selectUser = (state: RootState): AppUser | null => state.app.user
+export const selectIsUserLogged = (state: RootState): boolean => Boolean(state.app.user)
 export const selectAppColorMode = (state: RootState): ColorMode => state.app.colorMode
 
 export default appSlice.reducer
