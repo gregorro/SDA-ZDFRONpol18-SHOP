@@ -9,7 +9,7 @@ export interface ProductPhoto {
 }
 
 export interface Product {
-    firebaseId: string;
+    firebaseId?: string;
     id: string;
     name: string;
     price: number;
