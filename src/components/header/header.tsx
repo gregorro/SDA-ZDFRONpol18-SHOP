@@ -9,11 +9,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { ColorMode, selectAppColorMode, selectIsUserLogged, setAppColorMode } from '../../slices/app.slice';
 import { authService } from '../../service/auth/auth.service';
 import { useState } from 'react'
 import UserInfo from './user-info/user-info';
+import { Badge } from '@mui/material';
 
 const Header: React.FC = () => {
 
@@ -66,13 +68,24 @@ const Header: React.FC = () => {
                     </Box>
                     {isUserLogged ?
                         <>
-                            <IconButton
-                                size="large"
-                                color="inherit"
-                                onClick={handleClick}
-                            >
-                                <AccountCircleIcon />
-                            </IconButton>
+                            <Box>
+                                <IconButton
+                                    size="large"
+                                    color="inherit"
+                                >
+                                    <Badge badgeContent={5} color="warning">
+                                        <ShoppingCartIcon />
+                                    </Badge>
+
+                                </IconButton>
+                                <IconButton
+                                    size="large"
+                                    color="inherit"
+                                    onClick={handleClick}
+                                >
+                                    <AccountCircleIcon />
+                                </IconButton>
+                            </Box>
                             <UserInfo open={open} handleClose={handleClose} anchorEl={anchorEl} />
                         </>
                         : <Button color="inherit" onClick={logMockUser}>Login</Button>}
